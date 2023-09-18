@@ -1,0 +1,49 @@
+{
+  "name": "provinyl-services",
+  "version": "1.0.0",
+  "description": "Backend services for Provinyl",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/index.ts",
+    "prod": "tsc && node ./build/index.js",
+    "start": "node ./build/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "copytypes": "mv ./src/custom_typings/* ./node_modules/@types/"
+  },
+  "repository": "ssh://jay-jones-dev/v1/repos/collectors-services",
+  "author": "Jerrell Jones <jayjonesdevelopment@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "dependencies": {
+    "bluebird": "3.7.2",
+    "body-parser": "1.19.0",
+    "compression": "1.7.4",
+    "connect-flash": "^0.1.1",
+    "cookie-parser": "1.4.5",
+    "cookie-session": "1.4.0",
+    "cors": "2.8.5",
+    "disconnect": "^1.2.2",
+    "dotenv": "^8.2.0",
+    "express": "4.17.1",
+    "module-alias": "^2.2.2",
+    "reflect-metadata": "^0.1.13",
+    "winston": "3.3.3"
+  },
+  "devDependencies": {
+    "@types/bluebird": "^3.5.32",
+    "@types/compression": "1.7.0",
+    "@types/connect-flash": "^0.0.36",
+    "@types/cookie-parser": "1.4.2",
+    "@types/cookie-session": "2.0.42",
+    "@types/cors": "2.8.7",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "4.17.8",
+    "@types/module-alias": "^2.0.0",
+    "@types/node": "^14.11.2",
+    "@types/winston": "^2.4.4",
+    "ts-node": "8.9.1",
+    "ts-node-dev": "1.0.0-pre.44",
+    "typescript": "4.0.3"
+  }
+}

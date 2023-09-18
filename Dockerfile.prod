@@ -1,0 +1,26 @@
+# Stage 1 - Build
+FROM node as builder
+
+# Create app directory
+WORKDIR /usr/app
+
+# Install app dependencies
+# A wildcard is used to ensure both package.json AND package-lock.json are copied
+# where available (npm@5+)
+COPY package*.json ./
+RUN npm install
+# Bundle app source
+COPY . .
+RUN npm run copytypes
+RUN npm run build
+
+# Stage 2
+FROM node 
+WORKDIR /usr/app
+COPY package*.json ./
+RUN npm install --production
+
+COPY --from=builder /usr/app/build ./build
+
+EXPOSE 443
+CMD node build/index.js

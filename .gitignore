@@ -1,0 +1,6 @@
+node_modules
+.vscode
+.env
+yarn-error.log
+ormconfig.json
+build

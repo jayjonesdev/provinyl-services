@@ -1,0 +1,41 @@
+# REST Client tests
+
+### Base URLs
+# Dev
+@baseUrl = http://localhost:5000
+# QA
+# @baseUrl =
+
+### Get users 
+# GET {{baseUrl}}/user-management
+# Accept: application/json
+
+### Create user
+POST {{baseUrl}}/user-management/user
+Content-Type: application/json
+
+{
+    "email": "jerrell.l.jones@gmail.com",
+    "firstName": "Jerrell",
+    "lastName": "Jones",
+    "profilePicture": "",
+    "accountType": "Collaborator"
+}
+
+### Create user settings
+POST {{baseUrl}}/setting-management/setting
+Content-Type: application/json
+
+{
+    "idUser": 1
+}
+// TODO: JWT
+### Create user settings
+PUT {{baseUrl}}/setting-management/setting
+Content-Type: application/json
+
+{
+    "settings": {
+        "emailsEnabled": true
+    }
+}

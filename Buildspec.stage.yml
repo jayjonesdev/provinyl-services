@@ -1,0 +1,26 @@
+version: 0.2
+env:
+  secrets-manager:
+      DOCKER_ACCESS_TOKEN: jayjonesdevelopment/Docker/AccessToken:DOCKER_ACCESS_TOKEN
+phases:
+  install:
+    runtime-versions:
+      docker: 19
+  pre_build:
+    commands:
+      - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
+      - REPOSITORY_URI=563257027798.dkr.ecr.us-east-1.amazonaws.com/provinyl-services
+      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=${COMMIT_HASH:=stage}
+      - docker login -u jayjonesdevelopment -p $DOCKER_ACCESS_TOKEN
+  build:
+    commands:
+      - docker build -t $REPOSITORY_URI:stage -f Dockerfile.stage .
+      - docker tag $REPOSITORY_URI:stage $REPOSITORY_URI:$IMAGE_TAG
+  post_build:
+    commands:
+      - docker push $REPOSITORY_URI:stage
+      - docker push $REPOSITORY_URI:$IMAGE_TAG
+      - printf '[{"name":"provinyl-stage-services","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+artifacts:
+  files: imagedefinitions.json
