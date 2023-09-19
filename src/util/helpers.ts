@@ -31,7 +31,7 @@ export const parseReleaseDetails = (
 		genres: genres.join(', '),
 		releaseDate: released_formatted,
 		id,
-		coverArtUri: images.filter((image) => image.type === 'primary')[0].uri,
+		coverArtUri: images ? images.map((image) => image.uri)[0] : '',
 		labels: removeDuplicates(labels).join(', '),
 		uri,
 		year,
