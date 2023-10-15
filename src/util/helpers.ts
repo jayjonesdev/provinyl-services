@@ -22,8 +22,27 @@ export const parseReleaseDetails = (
 		labels: releaseLabels,
 		uri,
 		year,
+		tracklist,
+		videos,
 	} = release;
 	const labels = releaseLabels.map((label) => removeParentheses(label.name));
+	const tracks = tracklist.map(
+		({ duration, extraartists, position, title }) => ({
+			duration,
+			title,
+			position,
+			featuredArtists: extraartists
+				? extraartists
+						.reduce((acc, artist) => {
+							if (artist.role === 'Featuring') {
+								return [...acc, artist.name];
+							}
+							return acc;
+						}, [] as string[])
+						.join(', ')
+				: '',
+		}),
+	);
 
 	return {
 		title,
@@ -35,6 +54,8 @@ export const parseReleaseDetails = (
 		labels: removeDuplicates(labels).join(', '),
 		uri,
 		year,
+		trackList: tracks,
+		musicVideos: videos,
 	};
 };
 

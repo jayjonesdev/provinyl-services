@@ -128,4 +128,13 @@ export interface ReleaseDetails {
 	labels: string;
 	uri: string;
 	year: number;
+	trackList: ReleaseTrack[];
+	musicVideos: Video[];
+}
+
+export interface ReleaseTrack {
+	duration: string;
+	position: string;
+	title: string;
+	featuredArtists: string;
 }
