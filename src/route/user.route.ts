@@ -62,6 +62,27 @@ user.get(
 		return res.send(false);
 	},
 );
+// TODO: Add middleware to handle no access token
+user.delete(
+	'/user/:username/collection/release/:releaseid/instance/:instanceid',
+	async (req: Request, res: Response) => {
+		const username = req.params.username;
+		const releaseId = req.params.releaseid;
+		const instanceId = req.params.instanceid;
+		const accessToken = req.headers.authorization;
+
+		if (accessToken) {
+			const discog = new DiscogClient(JSON.parse(accessToken));
+
+			return await discog
+				.user()
+				.collection()
+				.removeRelease(username, 0, releaseId, instanceId)
+				.then(() => res.send(true));
+		}
+		return res.send(false);
+	},
+);
 
 const getUserReleases = async (
 	discog: any,
