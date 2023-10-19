@@ -138,3 +138,40 @@ export interface ReleaseTrack {
 	title: string;
 	featuredArtists: string;
 }
+
+export enum SearchType {
+	CATALOG_NUMBER = 'CATALOG_NUMBER',
+	BARCODE = 'BARCODE',
+	ALBUM_TITLE = 'ALBUM_TITLE',
+	ARTIST = 'ARTIST',
+	TRACK = 'TRACK',
+}
+
+export interface DatabaseSearchResponse {
+	pagination: any;
+	results: SearchRelease[];
+}
+/**
+ * 
+ * {
+    "page": 1,
+    "pages": 4,
+    "per_page": 100,
+    "items": 315,
+    "urls": {
+        "last": "https://api.discogs.com/database/search?artist=A+Tribe+Called+Quest&format=Vinyl&type=release&per_page=100&page=4",
+        "next": "https://api.discogs.com/database/search?artist=A+Tribe+Called+Quest&format=Vinyl&type=release&per_page=100&page=2"
+    }
+}
+ */
+
+export interface SearchRelease {
+	title: string;
+	year: number;
+	label: string[];
+	catno: string;
+	genre: string[];
+	cover_image: string;
+	id: number;
+	country: string;
+}

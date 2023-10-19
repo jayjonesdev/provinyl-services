@@ -84,6 +84,29 @@ user.delete(
 	},
 );
 
+user.post(
+	'/user/:username/collection/release/:releaseid',
+	async (req: Request, res: Response) => {
+		const username = req.params.username;
+		const releaseId = req.params.releaseid;
+		const accessToken = req.headers.authorization;
+
+		if (accessToken) {
+			const discog = new DiscogClient(JSON.parse(accessToken));
+
+			return await discog
+				.user()
+				.collection()
+				.addRelease(username, 0, releaseId)
+				.then(({ instance_id }: { instance_id: number }) => {
+					console.log(instance_id);
+					return res.send(instance_id).sendStatus(200);
+				});
+		}
+		return res.send(false);
+	},
+);
+
 const getUserReleases = async (
 	discog: any,
 	username: string,

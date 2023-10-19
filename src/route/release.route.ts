@@ -16,7 +16,6 @@ release.get('/release/details/:id', async (req: Request, res: Response) => {
 			.database()
 			.getRelease(id)
 			.then((details: ReleaseDetailsResponse) => {
-				// console.log(details);
 				const releaseDetails = parseReleaseDetails(details);
 				return res.send(releaseDetails);
 			});
