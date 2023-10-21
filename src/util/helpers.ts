@@ -36,7 +36,7 @@ export const parseReleaseDetails = (
 				? extraartists
 						.reduce((acc, artist) => {
 							if (artist.role === 'Featuring') {
-								return [...acc, artist.name];
+								return [...acc, removeParentheses(artist.name)];
 							}
 							return acc;
 						}, [] as string[])

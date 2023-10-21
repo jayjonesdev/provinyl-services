@@ -100,7 +100,7 @@ user.post(
 				.addRelease(username, 0, releaseId)
 				.then(({ instance_id }: { instance_id: number }) => {
 					console.log(instance_id);
-					return res.send(instance_id).sendStatus(200);
+					return res.send(instance_id.toString()).sendStatus(200);
 				});
 		}
 		return res.send(false);
