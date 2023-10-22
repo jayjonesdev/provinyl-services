@@ -15,6 +15,15 @@ export interface Release {
 	basic_information: BasicInformation;
 }
 
+export interface Want {
+	id: number;
+	resource_url: string;
+	date_added: string;
+	basic_information: BasicInformation;
+	rating: number;
+	notes: string;
+}
+
 export interface BasicInformation {
 	id: number;
 	master_id: number;
@@ -71,6 +80,7 @@ export interface UserCollectionItem {
 	releaseId: number;
 	imageUrl: string;
 	instanceId: number;
+	wantList?: boolean;
 }
 
 export interface UserCollectionValue {

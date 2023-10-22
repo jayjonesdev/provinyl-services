@@ -4,6 +4,7 @@ import {
 	ReleaseDetailsResponse,
 	SearchType,
 	UserCollectionItem,
+	Want,
 } from './types';
 
 export const removeDuplicates = (arr: any[]): any[] => [...new Set(arr)];
@@ -83,6 +84,35 @@ export const parseReleases = (releases: Release[]): UserCollectionItem[] => {
 				releaseId: basic_information.id,
 				imageUrl: basic_information.cover_image,
 				instanceId: release.instance_id,
+			},
+		];
+	}, [] as UserCollectionItem[]);
+};
+
+export const parseWants = (wants: Want[]): UserCollectionItem[] => {
+	return wants.reduce((acc, want) => {
+		const { basic_information, id } = want;
+		const artist = basic_information.artists.map((artist) =>
+			removeParentheses(artist.name),
+		);
+		const labels = basic_information.labels.map((label) =>
+			removeParentheses(label.name),
+		);
+		const catno = basic_information.labels.map((label) => label.catno);
+
+		return [
+			...acc,
+			{
+				title: basic_information.title,
+				artist: removeDuplicates(artist).join(', '),
+				year: basic_information.year,
+				labels: removeDuplicates(labels).join(', '),
+				genres: basic_information.genres.join(', '),
+				catno: removeDuplicates(catno).join(', '),
+				releaseId: basic_information.id,
+				imageUrl: basic_information.cover_image,
+				instanceId: id,
+				wantList: true,
 			},
 		];
 	}, [] as UserCollectionItem[]);

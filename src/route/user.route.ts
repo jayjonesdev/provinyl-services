@@ -4,8 +4,9 @@ import {
 	UserCollectionItem,
 	UserCollectionResponse,
 	UserCollectionValue,
+	Want,
 } from '../util/types';
-import { parseReleases } from '../util/helpers';
+import { parseReleases, parseWants } from '../util/helpers';
 
 const user: Router = Router();
 
@@ -43,6 +44,29 @@ user.get('/user/:username/collection', async (req: Request, res: Response) => {
 			);
 		}
 		return res.send({ pages, items: userCollection });
+	}
+});
+
+user.get('/user/:username/wantlist', async (req: Request, res: Response) => {
+	const username = req.params.username;
+	const accessToken = req.headers.authorization;
+	let userWantList: UserCollectionItem[] = [];
+
+	if (accessToken) {
+		const discog = new DiscogClient(JSON.parse(accessToken));
+		let page = 0,
+			pages = Number.MAX_SAFE_INTEGER;
+
+		while (page < pages) {
+			await getUserWantListReleases(discog, username, page + 1).then(
+				({ pages: maxPages, wants }) => {
+					pages = maxPages;
+					userWantList = [...userWantList, ...wants];
+					page++;
+				},
+			);
+		}
+		return res.send(userWantList);
 	}
 });
 
@@ -125,6 +149,28 @@ const getUserReleases = async (
 			return {
 				pages: data.pagination.pages,
 				releases: parseReleases(data.releases),
+			};
+		});
+};
+
+const getUserWantListReleases = async (
+	discog: any,
+	username: string,
+	page: number,
+): Promise<{ pages: number; wants: any[] }> => {
+	return await discog
+		.user()
+		.wantlist()
+		.getReleases(username, {
+			page,
+			per_page: 500,
+			sort: 'artist',
+			sort_order: 'asc',
+		})
+		.then((data: { pagination: any; wants: Want[] }) => {
+			return {
+				pages: data.pagination.pages,
+				wants: parseWants(data.wants),
 			};
 		});
 };
