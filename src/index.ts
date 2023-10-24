@@ -8,7 +8,6 @@ import { logger } from './service';
 import { middleware } from './util';
 import routes from './route';
 import flash from 'connect-flash';
-// import { checkAuth } from './util/middleware.util';
 
 config({ path: resolve(__dirname, '../.env') });
 
