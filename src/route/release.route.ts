@@ -7,20 +7,17 @@ export const release: Router = Router();
 
 release.get('/release/details/:id', async (req: Request, res: Response) => {
 	const id = req.params.id;
-	const accessToken = req.headers.authorization;
+	const accessToken = req.headers.authorization as string;
 
-	if (accessToken) {
-		const discog = new DiscogClient(JSON.parse(accessToken));
+	const discog = new DiscogClient(JSON.parse(accessToken));
 
-		return await discog
-			.database()
-			.getRelease(id)
-			.then((details: ReleaseDetailsResponse) => {
-				const releaseDetails = parseReleaseDetails(details);
-				return res.send(releaseDetails);
-			});
-	}
-	return res.send(false);
+	return await discog
+		.database()
+		.getRelease(id)
+		.then((details: ReleaseDetailsResponse) => {
+			const releaseDetails = parseReleaseDetails(details);
+			return res.send(releaseDetails);
+		});
 });
 
 export default release;
