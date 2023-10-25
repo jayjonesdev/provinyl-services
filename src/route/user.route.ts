@@ -75,7 +75,6 @@ user.get(
 			.then((data: UserCollectionValue) => res.send(data.median));
 	},
 );
-// TODO: Add middleware to handle no access token
 user.delete(
 	'/user/:username/collection/release/:releaseid/instance/:instanceid',
 	async (req: Request, res: Response) => {
@@ -108,9 +107,42 @@ user.post(
 			.collection()
 			.addRelease(username, 0, releaseId)
 			.then(({ instance_id }: { instance_id: number }) => {
-				console.log(instance_id);
-				return res.send(instance_id.toString()).sendStatus(200);
+				return res.send(instance_id.toString()).status(200);
 			});
+	},
+);
+
+user.delete(
+	'/user/:username/wantlist/release/:releaseid',
+	async (req: Request, res: Response) => {
+		const username = req.params.username;
+		const releaseId = req.params.releaseid;
+		const accessToken = req.headers.authorization as string;
+
+		const discog = new DiscogClient(JSON.parse(accessToken));
+
+		return await discog
+			.user()
+			.wantlist()
+			.removeRelease(username, releaseId)
+			.then(() => res.send(true));
+	},
+);
+
+user.post(
+	'/user/:username/wantlist/release/:releaseid',
+	async (req: Request, res: Response) => {
+		const username = req.params.username;
+		const releaseId = req.params.releaseid;
+		const accessToken = req.headers.authorization as string;
+
+		const discog = new DiscogClient(JSON.parse(accessToken));
+
+		return await discog
+			.user()
+			.wantlist()
+			.addRelease(username, releaseId)
+			.then(() => res.send(true));
 	},
 );
 
