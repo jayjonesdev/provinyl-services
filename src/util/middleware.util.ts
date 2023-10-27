@@ -41,11 +41,16 @@ export const handleCompression = (router: Router) => {
 
 export const checkAuth = (req: Request, res: Response, next: NextFunction) => {
 	const accessToken = req.headers.authorization;
+	const allowedPaths = ['auth', 'public'];
 
-	if (accessToken || req.path.includes('/auth')) {
+	if (
+		accessToken ||
+		req.path.includes('/auth') ||
+		req.path.includes('public')
+	) {
 		next();
 	} else {
-		res.sendStatus(403);
+		res.sendStatus(401);
 	}
 };
 

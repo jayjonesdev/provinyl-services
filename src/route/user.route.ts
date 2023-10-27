@@ -6,7 +6,12 @@ import {
 	UserCollectionValue,
 	Want,
 } from '../util/types';
-import { parseReleases, parseWants } from '../util/helpers';
+import {
+	getUserReleases,
+	getUserWantListReleases,
+	parseReleases,
+	parseWants,
+} from '../util/helpers';
 
 const user: Router = Router();
 
@@ -145,50 +150,6 @@ user.post(
 			.then(() => res.send(true));
 	},
 );
-
-const getUserReleases = async (
-	discog: any,
-	username: string,
-	page: number,
-): Promise<{ pages: number; releases: any[] }> => {
-	return await discog
-		.user()
-		.collection()
-		.getReleases(username, 0, {
-			page,
-			per_page: 500,
-			sort: 'artist',
-			sort_order: 'asc',
-		})
-		.then((data: UserCollectionResponse) => {
-			return {
-				pages: data.pagination.pages,
-				releases: parseReleases(data.releases),
-			};
-		});
-};
-
-const getUserWantListReleases = async (
-	discog: any,
-	username: string,
-	page: number,
-): Promise<{ pages: number; wants: any[] }> => {
-	return await discog
-		.user()
-		.wantlist()
-		.getReleases(username, {
-			page,
-			per_page: 500,
-			sort: 'artist',
-			sort_order: 'asc',
-		})
-		.then((data: { pagination: any; wants: Want[] }) => {
-			return {
-				pages: data.pagination.pages,
-				wants: parseWants(data.wants),
-			};
-		});
-};
 
 export default user;
 

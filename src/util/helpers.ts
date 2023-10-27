@@ -4,6 +4,7 @@ import {
 	ReleaseDetailsResponse,
 	SearchType,
 	UserCollectionItem,
+	UserCollectionResponse,
 	Want,
 } from './types';
 
@@ -149,4 +150,48 @@ export const uniqByWithComparator = async <T extends { [k: string]: any }>(
 		}
 		return accumulator;
 	}, [] as Array<T>);
+};
+
+export const getUserReleases = async (
+	discog: any,
+	username: string,
+	page: number,
+): Promise<{ pages: number; releases: any[] }> => {
+	return await discog
+		.user()
+		.collection()
+		.getReleases(username, 0, {
+			page,
+			per_page: 500,
+			sort: 'artist',
+			sort_order: 'asc',
+		})
+		.then((data: UserCollectionResponse) => {
+			return {
+				pages: data.pagination.pages,
+				releases: parseReleases(data.releases),
+			};
+		});
+};
+
+export const getUserWantListReleases = async (
+	discog: any,
+	username: string,
+	page: number,
+): Promise<{ pages: number; wants: any[] }> => {
+	return await discog
+		.user()
+		.wantlist()
+		.getReleases(username, {
+			page,
+			per_page: 500,
+			sort: 'artist',
+			sort_order: 'asc',
+		})
+		.then((data: { pagination: any; wants: Want[] }) => {
+			return {
+				pages: data.pagination.pages,
+				wants: parseWants(data.wants),
+			};
+		});
 };
