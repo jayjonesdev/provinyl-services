@@ -35,7 +35,6 @@ database.get(
 				const releases = await uniqByWithComparator<SearchRelease>(
 					data.results,
 					'master_id',
-					0,
 				).then((releases) =>
 					releases.map((release) => {
 						const {

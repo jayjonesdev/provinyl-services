@@ -139,11 +139,10 @@ export const getSearchType = (searchType: SearchType) => {
 export const uniqByWithComparator = async <T extends { [k: string]: any }>(
 	array: Array<T>,
 	iteratee: string,
-	comparator: number,
 ): Promise<Array<T>> => {
 	return array.reduce((accumulator, currVal) => {
-		if (currVal[iteratee] === comparator) accumulator.push(currVal);
-		else if (
+		if (
+			currVal[iteratee] !== 0 &&
 			!accumulator.find((obj: any) => obj[iteratee] === currVal[iteratee])
 		) {
 			accumulator.push(currVal);
