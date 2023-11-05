@@ -147,7 +147,9 @@ user.post(
 			.user()
 			.wantlist()
 			.addRelease(username, releaseId)
-			.then(() => res.send(true));
+			.then(({ instance_id }: { instance_id: number }) => {
+				return res.send(instance_id.toString()).status(200);
+			});
 	},
 );
 

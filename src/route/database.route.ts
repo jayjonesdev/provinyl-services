@@ -32,9 +32,11 @@ database.get(
 				[searchType]: query,
 			})
 			.then(async (data: DatabaseSearchResponse) => {
+				// TODO: Fix comparator
 				const releases = await uniqByWithComparator<SearchRelease>(
 					data.results,
-					'master_id',
+					'catno',
+					-1,
 				).then((releases) =>
 					releases.map((release) => {
 						const {
@@ -46,6 +48,10 @@ database.get(
 							catno,
 							id,
 							country,
+							user_data: {
+								in_collection: inCollection,
+								in_wantlist: inWantlist,
+							},
 						} = release;
 						const [artist, title] = releaseTitle.split(' - ');
 
@@ -59,6 +65,8 @@ database.get(
 							catno,
 							releaseId: id.toString(),
 							country,
+							inCollection,
+							inWantlist,
 						};
 					}),
 				);

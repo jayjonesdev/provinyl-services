@@ -184,4 +184,8 @@ export interface SearchRelease {
 	cover_image: string;
 	id: number;
 	country: string;
+	user_data: {
+		in_wantlist: boolean;
+		in_collection: boolean;
+	};
 }
